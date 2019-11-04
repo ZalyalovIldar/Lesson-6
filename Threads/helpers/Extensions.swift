@@ -31,6 +31,8 @@ extension UIViewController: UICollectionViewDelegateFlowLayout {
 
 extension UITableView {
     
+    /// registers the cell by its type
+    /// - Parameter cell: type of the cell that should be registered
     func register(cell: UITableViewCell.Type) {
         self.register(UINib(nibName: cell.nibName, bundle: nil), forCellReuseIdentifier: cell.nibName)
     }
@@ -38,6 +40,7 @@ extension UITableView {
 
 extension UITableViewCell {
     
+    /// returns the name of the class for usage as a nib name
     static var nibName: String {
         
         get {

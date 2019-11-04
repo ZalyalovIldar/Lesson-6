@@ -1,0 +1,47 @@
+//
+//  Extensions.swift
+//  Threads
+//
+//  Created by Enoxus on 03/11/2019.
+//  Copyright © 2019 Ildar Zalyalov. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+/// Making UIViewController conform to UICollectionViewDelegateFlowLayout in order to achieve insta-like layout
+extension UIViewController: UICollectionViewDelegateFlowLayout {
+    
+    ///Taken from stackoverflow
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let noOfCellsInRow = 3
+
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+
+        let totalSpace = flowLayout.sectionInset.left
+            + flowLayout.sectionInset.right
+            + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
+
+        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
+
+        return CGSize(width: size, height: size)
+    }
+}
+
+extension UITableView {
+    
+    func register(cell: UITableViewCell.Type) {
+        self.register(UINib(nibName: cell.nibName, bundle: nil), forCellReuseIdentifier: cell.nibName)
+    }
+}
+
+extension UITableViewCell {
+    
+    static var nibName: String {
+        
+        get {
+            return String(describing: self)
+        }
+    }
+}

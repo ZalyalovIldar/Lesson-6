@@ -96,8 +96,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, PostD
             
             self?.posts = posts
             self?.mainCollectionView.reloadData()
-        }
-        
+        }        
     }
 }
 

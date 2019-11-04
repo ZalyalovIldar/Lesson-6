@@ -24,6 +24,7 @@ class PostsTableViewController: UITableViewController, UISearchBarDelegate, Post
     /// delegate that should be updated when post is deleted
     private var delegate: PostDeletionDelegate?
     
+    /// action sheet ui consts
     let deleteActionTitle = "Удаление поста"
     let deleteActionMessage = "Вы уверены, что хотите продолжить?"
     let deleteActionButtonTitle = "Удалить"
@@ -42,9 +43,7 @@ class PostsTableViewController: UITableViewController, UISearchBarDelegate, Post
         
         tableView.estimatedRowHeight = 200
         tableView.rowHeight = UITableView.automaticDimension
-        
         postSearchBar.delegate = self
-        
         tableView.keyboardDismissMode = .onDrag
     }
     
@@ -52,6 +51,7 @@ class PostsTableViewController: UITableViewController, UISearchBarDelegate, Post
     /// - Parameter indexPath: indexpath of the requested post
     /// - Parameter delegate: delegate that needs to be updated when the post will be deleted
     func configure(with indexPath: IndexPath, delegate: PostDeletionDelegate?) {
+        
         currentPostIndex = indexPath
         self.delegate = delegate
     }
@@ -137,7 +137,6 @@ class PostsTableViewController: UITableViewController, UISearchBarDelegate, Post
     func deleteButtonPressed(on post: Post) {
         
         let actionSheetController = UIAlertController(title: deleteActionTitle, message: deleteActionMessage, preferredStyle: .actionSheet)
-
         let cancelActionButton = UIAlertAction(title: cancelActionButtonTitle, style: .cancel)
         
         actionSheetController.addAction(cancelActionButton)

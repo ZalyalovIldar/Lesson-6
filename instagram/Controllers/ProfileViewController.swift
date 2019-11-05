@@ -9,7 +9,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var userInfoLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var images: [UIImage] = LocalDataManager.getImages(complition: nil)
+    var images: [UIImage] = [UIImage(named: "photo1")!]
     
     var setImageForCell: ((Int, CollectionViewCell) -> Void)!
     

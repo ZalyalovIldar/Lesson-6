@@ -9,10 +9,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var userInfoLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var images: [UIImage] = [UIImage(named: "photo1")!]
-    
-    var setImageForCell: ((Int, CollectionViewCell) -> Void)!
-    
+    var postModels: [PostModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,16 +17,21 @@ class ProfileViewController: UIViewController {
         setupUI()
         setupCollectionView()
         
-        setImageForCell = { imageIndex, cell in
-            cell.image.image = self.images[imageIndex]
+        LocalDataManager.shared.asyncGetPosts { postModels in
+            DispatchQueue.main.async {
+                self.postModels = postModels
+                self.collectionView.reloadData()
+            }
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        guard let detailedPhotoViewController = segue.destination as? DetailedPhotoViewController else { return }
-        let image = sender as? UIImage
-        detailedPhotoViewController.image = image
+        guard let postsVC = segue.destination as? PostsViewController else { return }
+        guard let postIndexPath = sender as? IndexPath else { return}
+        let posts = postModels
+        postsVC.posts = posts
+        postsVC.postIndexPath = postIndexPath
     }
 }
 
@@ -38,13 +40,13 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return postModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        setImageForCell(indexPath.row, cell)
+        cell.setup(for: postModels[indexPath.row])
         return cell
     }
 
@@ -59,7 +61,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showDetailedImageSegue", sender: images[indexPath.row])
+        performSegue(withIdentifier: "showPostsSegue", sender: indexPath)
     }
 }
 

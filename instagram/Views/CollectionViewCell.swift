@@ -4,7 +4,7 @@ class CollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var image: UIImageView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func setup(for postModel: PostModel) {
+        image.image = postModel.photo
     }
 }

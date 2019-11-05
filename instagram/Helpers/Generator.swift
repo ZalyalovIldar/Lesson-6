@@ -17,7 +17,7 @@ class Generator {
             post.userImage = userImage
             post.text = "Post #\(i)"
             post.date = "\(i) september"
-            post.photo = UIImage(named: "photo1")
+            post.photo = UIImage(named: "photo\(i)")
             posts.append(post)
         }
         

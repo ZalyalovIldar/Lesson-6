@@ -1,6 +1,7 @@
 import UIKit
 
-private let postCellIdentifier = "PostCell"
+private let postCellIdentifier = "postCell"
+private let postCellNibName = "PostCell"
 
 class PostsViewController: UIViewController {
 
@@ -53,19 +54,15 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        //TODO: Dynamic cell height
-        return 660.0
-    }
-    
     func setupTableView() {
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        let nibCell = UINib(nibName: "PostCell", bundle: nil)
+        let nibCell = UINib(nibName: postCellNibName, bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: postCellIdentifier)
+        
+        tableView.rowHeight = UITableView.automaticDimension
     }
 }
 

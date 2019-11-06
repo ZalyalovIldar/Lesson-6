@@ -53,12 +53,3 @@ class PostCell: UITableViewCell {
         return mainActionSheet
     }
 }
-
-//MARK: - PostCellDelegate
-
-protocol PostCellDelegate: AnyObject {
-    
-    func presentActionSheet(actionSheet: UIAlertController)
-    
-    func reloadData()
-}

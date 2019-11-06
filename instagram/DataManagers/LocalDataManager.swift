@@ -4,11 +4,7 @@ class LocalDataManager: DataManagerProtocol {
     
     static let shared = LocalDataManager()
     
-    private var posts: [PostModel] = []
-    
-    init() {
-        posts = Generator.getData()
-    }
+    private var posts: [PostModel] = Generator.getData()
     
     //MARK: - Save
     

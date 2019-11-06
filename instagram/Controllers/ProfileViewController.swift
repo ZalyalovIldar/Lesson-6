@@ -1,5 +1,9 @@
 import UIKit
 
+private let imageCellIdentifier = "imageCell"
+private let imageCellNibName = "ImageCell"
+private let showPostsSegueName = "showPostsSegue"
+
 class ProfileViewController: UIViewController {
     
     @IBOutlet weak var userImage: UIImageView!
@@ -38,7 +42,6 @@ class ProfileViewController: UIViewController {
 
         guard let postsVC = segue.destination as? PostsViewController else { return }
         guard let postIndexPath = sender as? IndexPath else { return}
-        let posts = postModels
         postsVC.postIndexPath = postIndexPath
     }
 }
@@ -53,7 +56,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellIdentifier, for: indexPath) as! ImageCell
         cell.setup(for: postModels[indexPath.row])
         return cell
     }
@@ -69,7 +72,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showPostsSegue", sender: indexPath)
+        performSegue(withIdentifier: showPostsSegueName, sender: indexPath)
     }
 }
 
@@ -90,7 +93,7 @@ extension ProfileViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        let nibCell = UINib(nibName: "CollectionViewCell", bundle: nil)
-        collectionView.register(nibCell, forCellWithReuseIdentifier: "cell")
+        let nibCell = UINib(nibName: imageCellNibName, bundle: nil)
+        collectionView.register(nibCell, forCellWithReuseIdentifier: imageCellIdentifier)
     }
 }

@@ -39,7 +39,6 @@ class ProfileViewController: UIViewController {
         guard let postsVC = segue.destination as? PostsViewController else { return }
         guard let postIndexPath = sender as? IndexPath else { return}
         let posts = postModels
-        postsVC.posts = posts
         postsVC.postIndexPath = postIndexPath
     }
 }

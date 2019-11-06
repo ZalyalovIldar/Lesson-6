@@ -5,14 +5,16 @@ private let postCellIdentifier = "PostCell"
 class PostsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
-    var posts: [PostModel]!
+    var posts: [PostModel] = []
     var postIndexPath: IndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+        setupSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +66,31 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let nibCell = UINib(nibName: "PostCell", bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: postCellIdentifier)
+    }
+}
+
+//MARK: - SearchBar
+
+extension PostsViewController: UISearchBarDelegate {
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        guard !searchText.isEmpty else {
+            fetchData()
+            return
+        }
+        
+        LocalDataManager.shared.asyncSearchPost(for: searchText) { postModels in
+            
+            DispatchQueue.main.async {
+                self.posts = postModels
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 

@@ -4,7 +4,11 @@ class LocalDataManager: DataManagerProtocol {
     
     static let shared = LocalDataManager()
     
-    private var posts = Generator.getData()
+    private var posts: [PostModel] = []
+    
+    init() {
+        posts = Generator.getData()
+    }
     
     //MARK: - Save
     
@@ -12,10 +16,12 @@ class LocalDataManager: DataManagerProtocol {
         self.posts.append(post)
     }
     
-    func asyncSavePost(post: PostModel) {
+    func asyncSavePost(post: PostModel, complition: @escaping () -> Void) {
+        
         let queue = DispatchQueue.global()
         queue.async {
             self.posts.append(post)
+            complition()
         }
     }
     
@@ -57,13 +63,14 @@ class LocalDataManager: DataManagerProtocol {
         }
     }
     
-    func asyncDeletePost(with postID: String) {
+    func asyncDeletePost(with postID: String, complition: @escaping () -> Void) {
         
         let queue = DispatchQueue.global()
         queue.async {
             self.posts.removeAll { (PostModel) -> Bool in
                 PostModel.id == postID
             }
+            complition()
         }
     }
     

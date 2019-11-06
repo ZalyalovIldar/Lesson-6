@@ -12,17 +12,28 @@ class PostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Не работает(
-        //self.navigationItem.backBarButtonItem?.title = ""
-        
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        tableView.scrollToRow(at: postIndexPath, at: .top, animated: false)
+        tableView.scrollToRow(at: postIndexPath, at: .top, animated: true)
+    }
+    
+    func fetchData() {
+        
+        LocalDataManager.shared.asyncGetPosts { postModels in
+            
+            DispatchQueue.main.async {
+                self.posts = postModels
+                self.tableView.reloadData()
+            }
+        }
     }
 }
-
 
 //MARK: - TableView
 
@@ -36,6 +47,7 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: postCellIdentifier) as! PostCell
         cell.setup(for: posts[indexPath.row])
+        cell.postCellDelegate = self
         return cell
     }
     
@@ -52,5 +64,18 @@ extension PostsViewController: UITableViewDelegate, UITableViewDataSource {
         
         let nibCell = UINib(nibName: "PostCell", bundle: nil)
         tableView.register(nibCell, forCellReuseIdentifier: postCellIdentifier)
+    }
+}
+
+//MARK: - PostCell Delegate
+
+extension PostsViewController: PostCellDelegate {
+    
+    func presentActionSheet(actionSheet: UIAlertController) {
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func reloadData() {
+        fetchData()
     }
 }

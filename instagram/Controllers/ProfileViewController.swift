@@ -16,6 +16,13 @@ class ProfileViewController: UIViewController {
         
         setupUI()
         setupCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        fetchData()
+    }
+    
+    func fetchData() {
         
         LocalDataManager.shared.asyncGetPosts { postModels in
             DispatchQueue.main.async {
@@ -24,6 +31,8 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    
+    //MARK: - Prepare for Segue
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 

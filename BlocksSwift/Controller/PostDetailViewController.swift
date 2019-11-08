@@ -120,6 +120,7 @@ class PostDetailViewController: UIViewController, UITableViewDataSource, UITable
     /// - Parameter indexPath: IndexPath to scroll to
     /// - Parameter delegate: Delegate to work with
     func configure(numberOfPosts: Int, indexPath: IndexPath, delegate: PostDeletingDelegate) {
+        
         self.numberOfPosts = numberOfPosts
         self.scrollToIndexPath = indexPath
         self.delegate = delegate

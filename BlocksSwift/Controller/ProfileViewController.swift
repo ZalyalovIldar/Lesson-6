@@ -76,12 +76,12 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     //MARK: - CollectionView Cell Selecting Actions
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         performSegue(withIdentifier: toDetailsSegueIdentifier, sender: indexPath)
     }
     
     //MARK: - Segue Actions
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == toDetailsSegueIdentifier, let scrollToIndexPath = sender as? IndexPath {
             
             let destinationVC = segue.destination as! PostDetailViewController

@@ -21,7 +21,7 @@ class Manager: DataManager {
         
         posts = []
         
-        for index in 1 ... 10 {
+        for index in 1 ... 9 {
             let likes = Int.random(in: 10...100)
             
             posts.append(Post(image: UIImage(named: "postPhoto\(index + 1)"), description: "Описание №\(index)", time: "\(index) часов назад", likes: likes))
@@ -36,10 +36,16 @@ class Manager: DataManager {
     
     func asyncSavePost(post: Post, completion: @escaping () -> Void) {
         
-        let queue = DispatchQueue.global()
-        queue.async {
-            self.posts.append(post)
-            completion()
+        let operationQueue = OperationQueue()
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            
+            let operation = BlockOperation { [weak self] in
+                
+                self?.posts.append(post)
+                completion()
+            }
+            operationQueue.addOperation(operation)
         }
     }
     
@@ -59,18 +65,25 @@ class Manager: DataManager {
     
     func asyncSearchPost(for searchString: String, completion: @escaping (([Post]) -> Void)) {
         
-        let queue = DispatchQueue.global()
-        queue.async {
+        let operationQueue = OperationQueue()
+        
+        DispatchQueue.global(qos: .userInteractive).async {
             
-            let filteredPosts = self.posts.filter({ post -> Bool in
-                return (post.description?.lowercased().contains(searchString.lowercased()))!
-            })
-            completion(filteredPosts)
+            let operation = BlockOperation { [weak self] in
+                
+                let filteredPosts = self?.posts.filter({ post -> Bool in
+                    return (post.description?.lowercased().contains(searchString.lowercased()))!
+                })
+                
+                guard let filteredPostsUnwrapped = filteredPosts else { return }
+                completion(filteredPostsUnwrapped)
+            }
+            operationQueue.addOperation(operation)
         }
     }
     
     //MARK: - Delete
- 
+    
     func syncDeletePost(with postID: String) {
         
         posts.removeAll { (post) -> Bool in
@@ -80,13 +93,14 @@ class Manager: DataManager {
     
     func asyncDeletePost(with post: Post, completion: @escaping ([Post]) -> Void) {
         
-       let operationQueue = OperationQueue()
+        let operationQueue = OperationQueue()
         
         DispatchQueue.global(qos: .userInteractive).async {
             
             let operation = BlockOperation { [weak self] in
                 
                 guard let index = self?.posts.firstIndex(where: {$0.postId == post.postId}) else { return }
+                
                 self?.posts.remove(at: index)
                 
                 DispatchQueue.main.async { [weak self] in
@@ -107,12 +121,33 @@ class Manager: DataManager {
     
     func asyncGetPosts(completion: @escaping (([Post]) -> Void)) {
         
+        let operationQueue = OperationQueue()
+        
         DispatchQueue.global(qos: .userInteractive).async {
-            completion(self.posts)
+            
+            let operation = BlockOperation { [weak self] in
+                
+                guard let posts = self?.posts else { return }
+                
+                completion(posts)
+            }
+            operationQueue.addOperation(operation)
         }
     }
     
-    func asyncGetUser(completion: (User) -> Void) {
-        completion(user)
+    func asyncGetUser(completion: @escaping (User) -> Void) {
+        
+        let operationQueue = OperationQueue()
+        
+        DispatchQueue.global(qos: .userInteractive).async {
+            
+            let operation = BlockOperation { [weak self] in
+                
+                guard let user = self?.user else { return }
+                
+                completion(user)
+            }
+            operationQueue.addOperation(operation)
+        }
     }
 }

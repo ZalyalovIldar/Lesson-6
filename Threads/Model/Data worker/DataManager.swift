@@ -23,5 +23,5 @@ protocol DataManager {
     func syncGetPosts() -> [Post]
     func asyncGetPosts(completion: @escaping (([Post]) -> Void))
     
-    func asyncGetUser(completion: (User) -> Void)
+    func asyncGetUser(completion: @escaping (User) -> Void)
 }

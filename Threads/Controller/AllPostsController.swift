@@ -16,33 +16,33 @@ class AllPostsController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: - Properties
     var user: User!
     var posts: [Post]!
-    var indexPath: Int!
+    var indexPathRow: Int!
     
-    weak var delegate: CellDelegate!
+    weak var delegate: DeletePostDelegate!
     
     let searchController = UISearchController(searchResultsController: nil)
     var filteredPosts = [Post]()
     
     var searchBarIsEmpty: Bool {
+        
         guard let text = searchController.searchBar.text else { return false }
         return text.isEmpty
     }
     var isFiltering: Bool { return searchController.isActive && !searchBarIsEmpty }
     
     //MARK: - VC Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         setupTable()
         setupSearchController()
         getData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        // НЕ работает чета вапще
-        
-//        tableView.scrollToRow(at: IndexPath(row: indexPath, section: 0), at: .top, animated: true)
-        
-        // Хотя выводит все как надо
-        print("\(indexPath)")
+        tableView.scrollToRow(at: IndexPath(row: indexPathRow , section: 0), at: .middle, animated: true)
     }
     
     // MARK: - Table view data source
@@ -59,6 +59,7 @@ class AllPostsController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellId, for: indexPath) as! PostCell
         
         var post: Post
@@ -77,6 +78,7 @@ class AllPostsController: UIViewController, UITableViewDelegate, UITableViewData
 extension AllPostsController {
     
     private func setupTable() {
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -91,7 +93,9 @@ extension AllPostsController {
     }
     
     private func getData() {
+        
         Manager.shared.asyncGetUser { [weak self] user in
+            
             self?.user = user
         }
         
@@ -123,29 +127,30 @@ extension AllPostsController: UISearchResultsUpdating {
 }
 
 //MARK: - Post delete delegate
-extension AllPostsController: CellDelegate {
+extension AllPostsController: DeletePostDelegate {
     
     func delete(post model: Post) {
         
-        let actionSheetController = UIAlertController(title: Constants.deleteAlertTitle, message: Constants.deleteAlertMessage, preferredStyle: .actionSheet)
-        let cancelActionButton = UIAlertAction(title: Constants.cancelActionTitle, style: .cancel)
+        let alertController = UIAlertController(title: Constants.deleteAlertTitle, message: Constants.deleteAlertMessage, preferredStyle: .actionSheet)
         
-        let deleteActionButton = UIAlertAction(title: Constants.deleteActionTitle, style: .destructive) { [weak self] action -> Void in
+        let cancelAction = UIAlertAction(title: Constants.cancelActionTitle, style: .cancel)
+        let deleteAction = UIAlertAction(title: Constants.deleteActionTitle, style: .destructive) { [weak self] action -> Void in
             
             Manager.shared.asyncDeletePost(with: model) { [weak self] posts in
                 
                 self?.posts = posts
                 
                 DispatchQueue.main.async {
+                    
                     self?.delegate?.delete(post: model)
                     self?.tableView.reloadData()
                 }
             }
         }
         
-        actionSheetController.addAction(deleteActionButton)
-        actionSheetController.addAction(cancelActionButton)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
         
-        self.present(actionSheetController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }

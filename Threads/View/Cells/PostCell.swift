@@ -10,6 +10,7 @@ import UIKit
 
 class PostCell: UITableViewCell {
     
+    //MARK: - Outlets
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
@@ -18,9 +19,11 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var postDescriptionLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
+    //MARK: - Properties
     var post: Post!
-    weak var cellDelegate: CellDelegate!
+    weak var cellDelegate: DeletePostDelegate!
     
+    //MARK: - Configure cell
     func configure(with user: User) {
         
         profileImageView.image = user.profileImage
@@ -39,6 +42,7 @@ class PostCell: UITableViewCell {
         timeLabel.text = post.time
     }
     
+    //MARK: - Buttin action
     @IBAction func actionsButtonPressed(_ sender: Any) {
         cellDelegate.delete(post: post)
     }

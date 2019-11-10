@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		295EF705237B5D7400654382 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295EF704237B5D7400654382 /* Post.swift */; };
 		29CEE6E62378AE6300C46689 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6E52378AE6300C46689 /* Manager.swift */; };
 		29CEE6E92378AE8000C46689 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6E82378AE8000C46689 /* User.swift */; };
 		29CEE6EB2378AEA500C46689 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6EA2378AEA500C46689 /* Constants.swift */; };
-		29CEE6EE2378AED300C46689 /* CellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6ED2378AED300C46689 /* CellDelegate.swift */; };
+		29CEE6EE2378AED300C46689 /* DeletePostDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6ED2378AED300C46689 /* DeletePostDelegate.swift */; };
 		29CEE6F12378AF0600C46689 /* AllPostsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6F02378AF0600C46689 /* AllPostsController.swift */; };
 		29CEE6F62378AF4400C46689 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6F52378AF4400C46689 /* PostCell.swift */; };
 		29CEE6F82378AF5300C46689 /* UserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29CEE6F72378AF5300C46689 /* UserInfoCell.swift */; };
@@ -25,10 +26,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		295EF704237B5D7400654382 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		29CEE6E52378AE6300C46689 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		29CEE6E82378AE8000C46689 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		29CEE6EA2378AEA500C46689 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		29CEE6ED2378AED300C46689 /* CellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDelegate.swift; sourceTree = "<group>"; };
+		29CEE6ED2378AED300C46689 /* DeletePostDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePostDelegate.swift; sourceTree = "<group>"; };
 		29CEE6F02378AF0600C46689 /* AllPostsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllPostsController.swift; sourceTree = "<group>"; };
 		29CEE6F52378AF4400C46689 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		29CEE6F72378AF5300C46689 /* UserInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
@@ -55,6 +57,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		295EF706237B5D9300654382 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				29CEE6E82378AE8000C46689 /* User.swift */,
+				295EF704237B5D7400654382 /* Post.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		295EF707237B5DA300654382 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				29CEE6ED2378AED300C46689 /* DeletePostDelegate.swift */,
+				29CEE6EA2378AEA500C46689 /* Constants.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		29CEE6E42378AE5200C46689 /* Data worker */ = {
 			isa = PBXGroup;
 			children = (
@@ -67,20 +87,11 @@
 		29CEE6E72378AE7700C46689 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				29CEE6EC2378AEB900C46689 /* Protocols */,
 				29CEE6E42378AE5200C46689 /* Data worker */,
-				29CEE6E82378AE8000C46689 /* User.swift */,
-				29CEE6EA2378AEA500C46689 /* Constants.swift */,
+				295EF706237B5D9300654382 /* Entities */,
+				295EF707237B5DA300654382 /* Helpers */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		29CEE6EC2378AEB900C46689 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				29CEE6ED2378AED300C46689 /* CellDelegate.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		29CEE6EF2378AEEE00C46689 /* Controller */ = {
@@ -221,10 +232,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29CEE6EE2378AED300C46689 /* CellDelegate.swift in Sources */,
+				29CEE6EE2378AED300C46689 /* DeletePostDelegate.swift in Sources */,
 				7C9D05A22369D3B700E6FA2F /* ViewController.swift in Sources */,
 				7C9D059F2369D3AB00E6FA2F /* DataManager.swift in Sources */,
 				29CEE6E92378AE8000C46689 /* User.swift in Sources */,
+				295EF705237B5D7400654382 /* Post.swift in Sources */,
 				29CEE6F12378AF0600C46689 /* AllPostsController.swift in Sources */,
 				7C9D058A2369D39C00E6FA2F /* AppDelegate.swift in Sources */,
 				29CEE6EB2378AEA500C46689 /* Constants.swift in Sources */,

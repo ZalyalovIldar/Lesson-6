@@ -18,8 +18,9 @@ class ViewController: UIViewController {
     var posts: [Post]!
     
     //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         configureVC()
     }
     
@@ -31,17 +32,21 @@ class ViewController: UIViewController {
         
         Manager.shared.asyncGetUser { [weak self] user in
             self?.user = user
+           
+            DispatchQueue.main.async { [weak self] in
+                self?.title = user.nickName
+            }
         }
         
         Manager.shared.asyncGetPosts { [weak self] posts in
             
             self?.posts = posts
-            
+
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
         }
-        title = user.nickName
+        
     }
     
     //MARK: - Navigation
@@ -57,8 +62,9 @@ class ViewController: UIViewController {
         if segue.identifier == Constants.showFullPhotoSegueId,  let indexPath = sender as? IndexPath {
             
             let dest = segue.destination as! AllPostsController
+            
             dest.delegate = self
-            dest.indexPath = indexPath.row
+            dest.indexPathRow = indexPath.row
         }
     }
 }
@@ -73,7 +79,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if section > 0 {
-            return user.posts.count
+            return posts.count
         } else {
             return 1
         }
@@ -86,6 +92,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDa
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postImageCellId, for: indexPath) as! PostImageCell
             
             let post = posts[indexPath.item]
+            
             cell.configure(with: post)
             
             return cell
@@ -93,21 +100,25 @@ extension ViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDa
         } else {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.userInfoCellId, for: indexPath) as! UserInfoCell
-            cell.configure(with: user)
+            
+            cell.setupCell(with: user)
             
             return cell
         }
     }
 }
 
-extension ViewController: CellDelegate {
+extension ViewController: DeletePostDelegate {
     
     func delete(post model: Post) {
         
         Manager.shared.asyncGetPosts { [weak self] posts in
+            
             self?.posts = posts
-            print(posts)
-            self?.collectionView.reloadData()
+            
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
         }
     }
 }

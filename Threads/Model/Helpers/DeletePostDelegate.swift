@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CellDelegate: AnyObject {
+protocol DeletePostDelegate: AnyObject {
     
     func delete(post model: Post)
 }

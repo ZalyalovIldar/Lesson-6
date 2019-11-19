@@ -14,7 +14,9 @@ class UserDataManager {
     
     static let users: [User] = [User(id: UUID().uuidString, nickname: "romash_only", avatarImage: UIImage(named: "ava"))]
     
-    func getUser(nickname: String) -> User{
+    /// Method for getting User
+    /// - Parameter nickname: nickname of User
+    func getUser(nickname: String) -> User {
         return UserDataManager.users.filter {
             $0.nickname == nickname
         }.first!

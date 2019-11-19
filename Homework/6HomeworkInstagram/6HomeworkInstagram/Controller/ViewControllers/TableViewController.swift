@@ -8,20 +8,23 @@
 
 import UIKit
 
+
+/// Delegate
 protocol TableViewControllerDelegate: AnyObject {
     func didChangeInfo(_ post: Post)
 }
 
+//MARK: Identifiers of cells
 private let postIden = TableViewCell.cellIden()
 
 class TableViewController: UITableViewController, UISearchBarDelegate, TableViewControllerDelegate {
     
+    //MARK: DataManagers
     let postDM = PostDataManager.shared
 
+    //MARK: Fields
     let searchController = UISearchController (searchResultsController: nil )
-    
     var postsOfUser: [Post]!
-    
     var filterPosts: [Post] = []
     var isSearchBarEmpty: Bool {
       return searchController.searchBar.text?.isEmpty ?? true
@@ -29,11 +32,10 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
     var isFiltering: Bool {
       return searchController.isActive && !isSearchBarEmpty
     }
-    
     var cursorIndex: IndexPath!
-    
     var getPostFromArray: ((Int) -> Post)!
 
+    //MARK: Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,12 +46,6 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
         }
         
         self.tableView.registerCell(TableViewCell.self)
-        
-        // Uncomment the following line to preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,19 +54,16 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
     }
     
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        
         if isFiltering {
             return filterPosts.count
         }
         return postsOfUser.count
-        
     }
 
     
@@ -88,15 +81,18 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
         cell.delegate = self
 
         return cell
-   
     }
     
+    /// Showing alerts for deleting
+    /// - Parameter post: post for deleting
     func didChangeInfo(_ post: Post) {
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let deletePost = UIAlertAction(title: "Удалить", style: .destructive) { (action) in
         
             let alertDelete = UIAlertController(title: "Удалить пост?", message: nil, preferredStyle: .actionSheet)
+            
             let delete = UIAlertAction(title: "Удалить", style: .destructive) { (action) in
                 self.postDM.asyncRemove(id: post.id) { (allPosts) in
                     DispatchQueue.main.async {
@@ -122,20 +118,19 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
     }
     
     
+    /// Settings of SearchController
     func searchBarPrepare() {
         
-        // 1
         searchController.searchResultsUpdater = self
-        // 2
         searchController.obscuresBackgroundDuringPresentation = false
-        // 3
-        searchController.searchBar.placeholder = "Поиск конфет"
-        // 4
-        navigationItem.searchController = searchController // 5
+        searchController.searchBar.placeholder = "Поиск среди постов"
+        navigationItem.searchController = searchController
         searchController.definesPresentationContext = true
-
     }
     
+    
+    /// Filtering content
+    /// - Parameter searchText: text for search
     func filterContentForSearchText(_ searchText: String) {
         
         postDM.asyncSearch(textOfSearch: searchText) { (filterPosts) in
@@ -143,51 +138,4 @@ class TableViewController: UITableViewController, UISearchBarDelegate, TableView
             self.tableView.reloadData()
         }
     }
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

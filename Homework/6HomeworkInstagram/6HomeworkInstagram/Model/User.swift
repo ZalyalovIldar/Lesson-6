@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Model of User
 struct User {
     var id: String
     var nickname: String

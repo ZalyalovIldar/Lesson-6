@@ -11,6 +11,8 @@ import UIKit
 
 extension TableViewController: UISearchResultsUpdating {
     
+    /// Method of Search Controller for updating
+    /// - Parameter searchController: searchController
     func updateSearchResults(for searchController: UISearchController) {
         
         let searchBar = searchController.searchBar

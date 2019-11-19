@@ -8,11 +8,14 @@
 
 import UIKit
 
+/// Cell Controller Of TableView
 class TableViewCell: UITableViewCell, CustomCell {
     
+    //MARK: Fields
     var post: Post!
     weak var delegate: TableViewControllerDelegate?
     
+    //MARK: Outlets
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var userNicknameLabel: UIButton!
     @IBOutlet weak var postImageView: UIImageView!

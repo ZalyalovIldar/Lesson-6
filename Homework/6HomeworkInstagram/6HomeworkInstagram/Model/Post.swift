@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Model of Post
 struct Post {
     var id: String
     var image: UIImage

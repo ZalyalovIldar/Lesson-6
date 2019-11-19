@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+    /// Create UIImage by name
+    /// - Parameter name: name of Image
     func getUIImage(name: String) -> UIImage {
         return UIImage(named: name) ?? UIImage()
-       }
+    }
 }

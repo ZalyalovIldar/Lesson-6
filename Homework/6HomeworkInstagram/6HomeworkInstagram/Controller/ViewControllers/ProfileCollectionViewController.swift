@@ -12,6 +12,7 @@ import UIKit
 private let headerIden = HeaderCollectionViewCell.cellIden()
 private let postIden = PostCollectionViewCell.cellIden()
 
+//MARK: Identifiers of Segue
 private let segueListIden = "goToList"
 
 class ProfileCollectionViewController: UICollectionViewController {
@@ -26,11 +27,9 @@ class ProfileCollectionViewController: UICollectionViewController {
     var postsOfUser: [Post]!
     var getPostFromArray: ((Int) -> Post)!
 
+    //MARK: Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
          
         //В принципе user уже должен быть после авторизации или из UserDefaults, поэтому это костыль
         self.user = userDM.getUser(nickname: "romash_only")
@@ -85,12 +84,14 @@ class ProfileCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         if indexPath.section != 0 {
             performSegue(withIdentifier: segueListIden, sender: indexPath)
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == segueListIden, let index = sender as? IndexPath {
 
             let destController = segue.destination as! TableViewController

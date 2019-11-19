@@ -23,6 +23,7 @@ class HeaderCollectionViewCell: UICollectionViewCell, CustomCell {
     //MARK: Outlets
     @IBOutlet weak var avatarImageView: UIImageView!
     
+    //MARK: Fields
     var user: User!
     
     override func awakeFromNib() {
@@ -40,6 +41,9 @@ class HeaderCollectionViewCell: UICollectionViewCell, CustomCell {
         avatarImageView.clipsToBounds = true
     }
     
+    //MARK: Post prepare
+    /// Setting Post
+    /// - Parameter user: user of Post
     func configure(with user: User) {
         self.user = user
         avatarImageView.image = user.avatarImage

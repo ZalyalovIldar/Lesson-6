@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Model of Comment
 struct Comment {
     var id: String
     var text: String

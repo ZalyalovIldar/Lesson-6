@@ -24,6 +24,7 @@ protocol DataProtocol {
     func asyncSearch(textOfSearch: String, completion: @escaping ([Post]) -> Void)
 }
 
+/// Data Manager of User
 class PostDataManager: DataProtocol {
 
     static var shared = PostDataManager()
